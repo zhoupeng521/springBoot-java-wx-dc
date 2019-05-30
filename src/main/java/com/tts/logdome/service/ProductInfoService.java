@@ -1,6 +1,7 @@
 package com.tts.logdome.service;
 
 import com.tts.logdome.data.ProductInfo;
+import com.tts.logdome.dto.ShopCarDto;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 
@@ -22,7 +23,8 @@ public interface ProductInfoService {
     ProductInfo save(ProductInfo productInfo);
 
     //加库存
+    void increaseStock(ShopCarDto shopCarDto);
 
     //减库存
-
+    void lessenStock(ShopCarDto shopCarDto);
 }
