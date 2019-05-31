@@ -23,8 +23,8 @@ public interface ProductInfoService {
     ProductInfo save(ProductInfo productInfo);
 
     //加库存
-    void increaseStock(ShopCarDto shopCarDto);
+    void increaseStock(List<ShopCarDto> shopCarDtoList);
 
     //减库存
-    void lessenStock(ShopCarDto shopCarDto);
+    void lessenStock(List<ShopCarDto> shopCarDtoList);
 }

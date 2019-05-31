@@ -20,6 +20,7 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.util.List;
 import java.util.stream.Collectors;
 
 /**
@@ -77,13 +78,13 @@ public class OrderServiceImpl implements OrderService {
         orderMaster.setOrderId(orderId);
         orderMaster.setOrderAmount(amount);
         BeanUtils.copyProperties(orderDto,orderMaster);
-        orderMasterRespository.save(orderMaster);
+        orderMaster = orderMasterRespository.save(orderMaster);
         //4.扣库存
-       /* ShopCarDto shopCarDto = orderDto.getOrderDetailList().stream().map(e->
+        List<ShopCarDto> shopCarDtoList = orderDto.getOrderDetailList().stream().map(e->
              new ShopCarDto(e.getProductId(),e.getProductQuantity())
-        ).collect(Collectors.toList());*/
-        productInfoService.lessenStock(shopCarDto);
-        return null;
+        ).collect(Collectors.toList());
+        productInfoService.lessenStock(shopCarDtoList);
+        return orderMaster;
     }
 
     @Override

@@ -10,7 +10,8 @@ import lombok.Getter;
 @Getter
 public enum SellExceptionEnum {
 
-    PRODUCT_NOT_EXIST(1,"商品不存在"),;
+    PRODUCT_NOT_EXIST(1,"商品不存在"),
+    PRODUCT_OF_LACK(2,"商品库存不足");
 
     private Integer code;
 
