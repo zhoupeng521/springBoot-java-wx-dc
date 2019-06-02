@@ -16,7 +16,9 @@ public enum SellExceptionEnum {
     ORDER_DETAIL_NOT_EXIST(4,"订单详情不存在"),
     ORDER_STATUS_ERROR(5,"订单状态不正确"),
     ORDER_UPDATE_ERROR(6,"订单更新失败"),
-    PAY_STATUS_ERROR(7,"订单支付状态不正确");
+    PAY_STATUS_ERROR(7,"订单支付状态不正确"),
+    PARAM_ERROR(8,"参数不正确"),
+    CART_ENPTY(9,"购物车不能为空");
 
     private Integer code;
 

@@ -69,10 +69,17 @@ public class OrderServiceImpl implements OrderService {
         return orderDto;
     }
 
-
+    /**
+     * 查询订单列表（根据买家）
+     * @param buyerOpenid
+     * @param pageable
+     * @return
+     */
     @Override
     public Page<OrderDto> findByBuyerOpenid(String buyerOpenid, Pageable pageable) {
-        return null;
+        Page<OrderMaster> orderMasterPage = orderMasterRespository.findByBuyerOpenid(buyerOpenid,pageable);
+        List<OrderDto> orderDtos = OrderMasterConvertToOrderDTO.convert(orderMasterPage.getContent());
+        return new PageImpl<OrderDto>(orderDtos,pageable,orderMasterPage.getTotalElements());
     }
 
     /**
@@ -116,6 +123,8 @@ public class OrderServiceImpl implements OrderService {
         BeanUtils.copyProperties(orderDto,orderMaster);
         orderMaster.setOrderId(orderId);
         orderMaster.setOrderAmount(amount);
+        orderMaster.setOrderStatus(OrderStatusEnum.NEW_ORDER.getCode());
+        orderMaster.setPayStatus(PayStatusEnum.FININSH_PAY.getCode());
         orderMaster.setOrderStatus(OrderStatusEnum.NEW_ORDER.getCode());
         orderMaster = orderMasterRespository.save(orderMaster);
         //4.扣库存

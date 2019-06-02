@@ -1,7 +1,9 @@
 package com.tts.logdome.dto;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.tts.logdome.common.enums.OrderStatusEnum;
 import com.tts.logdome.common.enums.PayStatusEnum;
+import com.tts.logdome.common.utils.serializer.Date2LongSerializer;
 import com.tts.logdome.data.OrderDetail;
 import lombok.Data;
 
@@ -60,11 +62,13 @@ public class OrderDto {
     /**
      * 创建时间
      */
+    @JsonSerialize(using = Date2LongSerializer.class)
     private Date createTime;
 
     /**
      * 更新时间
      */
+    @JsonSerialize(using = Date2LongSerializer.class)
     private Date updateTime;
 
     /**
