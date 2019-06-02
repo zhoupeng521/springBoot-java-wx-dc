@@ -15,7 +15,8 @@ public enum SellExceptionEnum {
     ORDER_NOT_EXIST(3,"订单不存在"),
     ORDER_DETAIL_NOT_EXIST(4,"订单详情不存在"),
     ORDER_STATUS_ERROR(5,"订单状态不正确"),
-    ORDER_UPDATE_ERROR(6,"取消订单失败");
+    ORDER_UPDATE_ERROR(6,"订单更新失败"),
+    PAY_STATUS_ERROR(7,"订单支付状态不正确");
 
     private Integer code;
 
