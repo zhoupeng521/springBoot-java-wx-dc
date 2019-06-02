@@ -30,13 +30,13 @@ public class ProductInfoRespositoryTest {
     public void save(){
         ProductInfo productInfo = new ProductInfo();
         productInfo.setProductId(UUID.randomUUID().toString());
-        productInfo.setProductName("七分裤子");
+        productInfo.setProductName("衣服");
         productInfo.setProductPrice(new BigDecimal(120));
         productInfo.setProductStatus(0);
         productInfo.setProductStock(100);
         productInfo.setCategoryType(1);
         productInfo.setProductIcon("dasdkfjlkjlfkjlkajflksf");
-        productInfo.setProductDescription("好的七分裤子");
+        productInfo.setProductDescription("好看的衣服");
         ProductInfo info = productInfoRespository.save(productInfo);
         Assert.assertNotNull(info);
     }

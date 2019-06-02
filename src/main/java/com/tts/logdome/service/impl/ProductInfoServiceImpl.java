@@ -46,11 +46,27 @@ public class ProductInfoServiceImpl implements ProductInfoService {
         return productInfoRespository.save(productInfo);
     }
 
+    /**
+     * 添加库存（取消订单）
+     * @param shopCarDtoList
+     */
     @Override
     public void increaseStock(List<ShopCarDto> shopCarDtoList) {
-
+        for (ShopCarDto shopCarDto : shopCarDtoList){
+            ProductInfo productInfo = productInfoRespository.findById(shopCarDto.getProductId()).orElse(null);
+            if(productInfo == null){
+                throw new SellException(SellExceptionEnum.PRODUCT_NOT_EXIST);
+            }
+            Integer stock = productInfo.getProductStock() + shopCarDto.getProductQuantity();
+            productInfo.setProductStock(stock);
+            productInfoRespository.save(productInfo);
+        }
     }
 
+    /**
+     * 减去库存
+     * @param shopCarDtoList
+     */
     @Override
     @Transactional
     public void lessenStock(List<ShopCarDto> shopCarDtoList) {

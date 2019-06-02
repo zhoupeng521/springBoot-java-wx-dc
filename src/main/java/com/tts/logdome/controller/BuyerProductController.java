@@ -48,9 +48,11 @@ public class BuyerProductController {
             BeanUtils.copyProperties(productCategory,productVO);
             List<ProductInfoVO> productInfoVOList = new ArrayList<>();
             for (ProductInfo productInfo : productInfoList){
-                ProductInfoVO productInfoVO = new ProductInfoVO();
-                BeanUtils.copyProperties(productInfo,productInfoVO);
-                productInfoVOList.add(productInfoVO);
+                if(productInfo.getCategoryType() == productCategory.getCategoryType()){
+                    ProductInfoVO productInfoVO = new ProductInfoVO();
+                    BeanUtils.copyProperties(productInfo,productInfoVO);
+                    productInfoVOList.add(productInfoVO);
+                }
             }
             productVO.setProductInfoVOList(productInfoVOList);
             productVOList.add(productVO);

@@ -15,13 +15,13 @@ import java.util.List;
 public interface OrderService {
 
     /** 查询单个订单 **/
-    OrderMaster findOne(String orderId);
+    OrderDto findOne(String orderId);
 
     /** 查询订单列表 **/
-    Page<OrderMaster> findByBuyerOpenid(String buyerOpenid, Pageable pageable);
+    Page<OrderDto> findByBuyerOpenid(String buyerOpenid, Pageable pageable);
 
     /** 查询订单全部列表 **/
-    Page<OrderMaster> findAllList(Pageable pageable);
+    Page<OrderDto> findAllList(Pageable pageable);
 
     /** 创建订单 **/
     OrderMaster create(OrderDto orderDto);
