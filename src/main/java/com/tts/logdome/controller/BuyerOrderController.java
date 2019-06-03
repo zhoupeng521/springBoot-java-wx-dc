@@ -11,7 +11,10 @@ import com.tts.logdome.service.OrderService;
 import com.tts.logdome.vo.ResultVO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.util.CollectionUtils;
+import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -33,7 +36,12 @@ public class BuyerOrderController {
     @Autowired
     private OrderService orderService;
 
-    //创建订单
+    /**
+     *  创建订单
+     * @param orderForm
+     * @param bindingResult
+     * @return
+     */
     @RequestMapping("/create")
     public ResultVO<Map<String,String>> create(@Valid OrderForm orderForm, BindingResult bindingResult){
         //检验参数是否错误
@@ -53,27 +61,72 @@ public class BuyerOrderController {
         return ResultVOUtils.success(resultMap);
     }
 
-    //订单列表
+    /**
+     * 订单列表
+     * @param openid
+     * @param page
+     * @param size
+     * @return
+     */
+    @RequestMapping("/list")
     public ResultVO<List<OrderDto>> list(@RequestParam("openid") String openid,
                                          @RequestParam(value = "page",defaultValue = "0") Integer page,
                                          @RequestParam(value = "size",defaultValue = "10") Integer size){
-
-        return null;
+        //校验参数
+        if(StringUtils.isEmpty(openid)){
+            log.error("【订单列表】参数错误，openid={} page={} size={}",openid,page,size);
+            throw new SellException(SellExceptionEnum.PARAM_ERROR);
+        }
+        PageRequest pageRequest = PageRequest.of(page,size);
+        Page<OrderDto> orderDtoPage = orderService.findByBuyerOpenid(openid,pageRequest);
+        return ResultVOUtils.success(orderDtoPage.getContent());
     }
 
-    //订单详情
-    public ResultVO detail(){
-        return null;
+    /**
+     * 订单详情
+     * @param orderId
+     * @return
+     */
+    @RequestMapping("/detail")
+    public ResultVO<OrderDto> detail(@RequestParam("orderId") String orderId){
+        if (StringUtils.isEmpty(orderId)){
+            log.error("【订单列表】参数错误，openid={} ",orderId);
+            throw new SellException(SellExceptionEnum.PARAM_ERROR);
+        }
+        OrderDto orderDto = orderService.findOne(orderId);
+        return ResultVOUtils.success(orderDto);
     }
 
-    //取消订单
-    public ResultVO cancle(){
-        return null;
+    /**
+     * 取消订单
+     * @param orderId
+     * @return
+     */
+    @RequestMapping("/cancle")
+    public ResultVO<Void> cancle(@RequestParam("orderId") String orderId){
+        if (StringUtils.isEmpty(orderId)){
+            log.error("【订单列表】参数错误，openid={} ",orderId);
+            throw new SellException(SellExceptionEnum.PARAM_ERROR);
+        }
+        OrderDto orderDto = orderService.findOne(orderId);
+        orderService.cancel(orderDto);
+        return ResultVOUtils.success();
     }
 
-    //支付完成
-    public ResultVO paid(){
-        return null;
+    /**
+     * 支付完成
+     * @param orderId
+     * @return
+     */
+    @RequestMapping("/paid")
+    public ResultVO paid(@RequestParam("orderId") String orderId){
+        if (StringUtils.isEmpty(orderId)){
+            log.error("【订单列表】参数错误，openid={} ",orderId);
+            throw new SellException(SellExceptionEnum.PARAM_ERROR);
+        }
+        OrderDto orderDto = orderService.findOne(orderId);
+        orderService.paid(orderDto);
+        return ResultVOUtils.success();
     }
 
 }
