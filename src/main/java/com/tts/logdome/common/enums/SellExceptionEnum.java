@@ -19,7 +19,7 @@ public enum SellExceptionEnum {
     PAY_STATUS_ERROR(7,"订单支付状态不正确"),
     PARAM_ERROR(8,"参数不正确"),
     CART_ENPTY(9,"购物车不能为空"),
-    OPENID_ERROR(10,""),;
+    OPENID_ERROR(10,"当前用户无权访问该订单"),;
 
     private Integer code;
 

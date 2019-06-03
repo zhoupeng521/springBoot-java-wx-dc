@@ -8,6 +8,7 @@ import com.tts.logdome.service.OrderService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 /**
  * @创建人 pc801
@@ -29,16 +30,35 @@ public class BuyerSerivceImpl implements BuyerService {
      */
     @Override
     public OrderDto findOrderOne(String openid, String orderId) {
+        if (StringUtils.isEmpty(orderId)){
+            log.error("【取消订单】参数错误，openid={} ",orderId);
+            throw new SellException(SellExceptionEnum.PARAM_ERROR);
+        }
         OrderDto orderDto = orderService.findOne(orderId);
         if(!orderDto.getBuyerOpenid().equalsIgnoreCase(openid)){
             log.error("【订单详情】订单的openid与用户的openid不同，orderId={} opendid={}",orderId,openid);
-            throw new SellException(SellExceptionEnum);
+            throw new SellException(SellExceptionEnum.OPENID_ERROR);
         }
-        return null;
+        return orderDto;
     }
 
+    /**
+     * 取消订单
+     * @param openid
+     * @param orderId
+     * @return
+     */
     @Override
     public OrderDto cancel(String openid, String orderId) {
-        return null;
+        if (StringUtils.isEmpty(orderId)){
+            log.error("【取消订单】参数错误，openid={} ",orderId);
+            throw new SellException(SellExceptionEnum.PARAM_ERROR);
+        }
+        OrderDto orderDto = orderService.findOne(orderId);
+        if(!orderDto.getBuyerOpenid().equalsIgnoreCase(openid)){
+            log.error("【取消订单】订单的openid与用户的openid不同，orderId={} opendid={}",orderId,openid);
+            throw new SellException(SellExceptionEnum.OPENID_ERROR);
+        }
+        return orderService.cancel(orderDto);
     }
 }

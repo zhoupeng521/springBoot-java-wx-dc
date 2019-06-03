@@ -7,6 +7,7 @@ import com.tts.logdome.common.utils.ResultVOUtils;
 import com.tts.logdome.data.OrderMaster;
 import com.tts.logdome.dto.OrderDto;
 import com.tts.logdome.form.OrderForm;
+import com.tts.logdome.service.BuyerService;
 import com.tts.logdome.service.OrderService;
 import com.tts.logdome.vo.ResultVO;
 import lombok.extern.slf4j.Slf4j;
@@ -35,6 +36,9 @@ public class BuyerOrderController {
 
     @Autowired
     private OrderService orderService;
+
+    @Autowired
+    private BuyerService buyerService;
 
     /**
      *  创建订单
@@ -90,12 +94,7 @@ public class BuyerOrderController {
     @RequestMapping("/detail")
     public ResultVO<OrderDto> detail(@RequestParam("openid") String openid,
                                      @RequestParam("orderId") String orderId){
-        // TODO 不安全的做法，改进
-        if (StringUtils.isEmpty(orderId)){
-            log.error("【订单列表】参数错误，openid={} ",orderId);
-            throw new SellException(SellExceptionEnum.PARAM_ERROR);
-        }
-        OrderDto orderDto = orderService.findOne(orderId);
+        OrderDto orderDto = buyerService.findOrderOne(openid,orderId);
         return ResultVOUtils.success(orderDto);
     }
 
@@ -107,13 +106,7 @@ public class BuyerOrderController {
     @RequestMapping("/cancle")
     public ResultVO<Void> cancle(@RequestParam("openid") String openid,
                                  @RequestParam("orderId") String orderId){
-        // TODO 不安全的做法，改进
-        if (StringUtils.isEmpty(orderId)){
-            log.error("【订单列表】参数错误，openid={} ",orderId);
-            throw new SellException(SellExceptionEnum.PARAM_ERROR);
-        }
-        OrderDto orderDto = orderService.findOne(orderId);
-        orderService.cancel(orderDto);
+        buyerService.cancel(openid,orderId);
         return ResultVOUtils.success();
     }
 
