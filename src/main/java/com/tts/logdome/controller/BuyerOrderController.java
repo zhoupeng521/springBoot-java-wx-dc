@@ -88,7 +88,9 @@ public class BuyerOrderController {
      * @return
      */
     @RequestMapping("/detail")
-    public ResultVO<OrderDto> detail(@RequestParam("orderId") String orderId){
+    public ResultVO<OrderDto> detail(@RequestParam("openid") String openid,
+                                     @RequestParam("orderId") String orderId){
+        // TODO 不安全的做法，改进
         if (StringUtils.isEmpty(orderId)){
             log.error("【订单列表】参数错误，openid={} ",orderId);
             throw new SellException(SellExceptionEnum.PARAM_ERROR);
@@ -103,7 +105,9 @@ public class BuyerOrderController {
      * @return
      */
     @RequestMapping("/cancle")
-    public ResultVO<Void> cancle(@RequestParam("orderId") String orderId){
+    public ResultVO<Void> cancle(@RequestParam("openid") String openid,
+                                 @RequestParam("orderId") String orderId){
+        // TODO 不安全的做法，改进
         if (StringUtils.isEmpty(orderId)){
             log.error("【订单列表】参数错误，openid={} ",orderId);
             throw new SellException(SellExceptionEnum.PARAM_ERROR);
@@ -119,7 +123,9 @@ public class BuyerOrderController {
      * @return
      */
     @RequestMapping("/paid")
-    public ResultVO paid(@RequestParam("orderId") String orderId){
+    public ResultVO<Void> paid(@RequestParam("openid") String openid,
+                               @RequestParam("orderId") String orderId){
+        // TODO 不安全的做法，改进
         if (StringUtils.isEmpty(orderId)){
             log.error("【订单列表】参数错误，openid={} ",orderId);
             throw new SellException(SellExceptionEnum.PARAM_ERROR);
