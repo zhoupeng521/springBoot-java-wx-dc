@@ -1,4 +1,4 @@
-package com.tts.logdome.common;
+package com.tts.logdome.common.config;
 
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;

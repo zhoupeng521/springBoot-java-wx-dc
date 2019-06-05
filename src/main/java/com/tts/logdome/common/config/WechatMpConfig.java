@@ -1,4 +1,4 @@
-package com.tts.logdome.common;
+package com.tts.logdome.common.config;
 
 import me.chanjar.weixin.mp.api.WxMpConfigStorage;
 import me.chanjar.weixin.mp.api.WxMpInMemoryConfigStorage;
