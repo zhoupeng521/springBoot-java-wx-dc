@@ -13,5 +13,9 @@ server:
     context-path: /sell
 
 wechat:
-  mpAppId:
-  mpAppSecret:
+  mpAppId:  #公众号appId
+  mpAppSecret:  #公众号appSeceret
+  mchId:  #商户号ID
+  mchKey: #商户号KEY
+  KeyPath: #证书存放地址
+  notifyUrl: #异步回调地址
