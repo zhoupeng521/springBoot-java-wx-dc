@@ -28,7 +28,7 @@ public class WechatController {
     public String authorize(@RequestParam(value = "returnUrl") String returnUrl){
         //1.配置
         //2.调用方式
-        String url = "";
+        String url = "http://9d0fe299.ngrok.io/sell/wachat/userInfo";
         String redirectUrl = wxMpService.oauth2buildAuthorizationUrl(url, WxConsts.OAuth2Scope.SNSAPI_USERINFO, URLEncoder.encode(returnUrl));
         log.info("【微信网页授权】获取code,result={}",redirectUrl);
         return "redirect:" + redirectUrl;

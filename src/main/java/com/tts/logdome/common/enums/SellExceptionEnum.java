@@ -20,7 +20,8 @@ public enum SellExceptionEnum {
     PARAM_ERROR(8,"参数不正确"),
     CART_ENPTY(9,"购物车不能为空"),
     OPENID_ERROR(10,"当前用户无权访问该订单"),
-    WECHAT_MP_ERROR(11,"微信公众账号错误");
+    WECHAT_MP_ERROR(11,"微信公众账号错误"),
+    ORDER_AMOUNT_ERROR(12,"异步通知金额与订单金额不一致");
 
     private Integer code;
 

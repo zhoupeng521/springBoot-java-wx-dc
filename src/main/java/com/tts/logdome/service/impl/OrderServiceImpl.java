@@ -14,6 +14,7 @@ import com.tts.logdome.dto.ShopCarDto;
 import com.tts.logdome.repository.OrderDetailRespository;
 import com.tts.logdome.repository.OrderMasterRespository;
 import com.tts.logdome.service.OrderService;
+import com.tts.logdome.service.PayService;
 import com.tts.logdome.service.ProductInfoService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
@@ -47,6 +48,9 @@ public class OrderServiceImpl implements OrderService {
 
     @Autowired
     private OrderDetailRespository orderDetailRespository;
+
+    @Autowired
+    private PayService payService;
 
     /**
      * 查看订单详情
@@ -168,6 +172,7 @@ public class OrderServiceImpl implements OrderService {
         //如果已支付，需要退款
         if(orderDto.getPayStatus().equals(PayStatusEnum.FININSH_PAY.getCode())){
             // TODO
+            payService.refund(orderDto);
         }
         return orderDto;
     }
