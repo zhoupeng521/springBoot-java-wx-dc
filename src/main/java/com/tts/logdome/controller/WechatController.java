@@ -28,7 +28,7 @@ public class WechatController {
     public String authorize(@RequestParam(value = "returnUrl") String returnUrl){
         //1.配置
         //2.调用方式
-        String url = "http://9d0fe299.ngrok.io/sell/wachat/userInfo";
+        String url = "http://55d6af99.ngrok.io/sell/wechat/userInfo";
         String redirectUrl = wxMpService.oauth2buildAuthorizationUrl(url, WxConsts.OAuth2Scope.SNSAPI_USERINFO, URLEncoder.encode(returnUrl));
         log.info("【微信网页授权】获取code,result={}",redirectUrl);
         return "redirect:" + redirectUrl;
@@ -36,7 +36,7 @@ public class WechatController {
 
     @GetMapping("/userInfo")
     public String userInfo(@RequestParam(value = "code") String code,
-                         @RequestParam(value = "returnUrl") String returnUrl){
+                         @RequestParam(value = "state") String state){
         WxMpOAuth2AccessToken wxMpOAuth2AccessToken = null;
         try {
             //获取access_token包含userInfo得信息
@@ -50,7 +50,7 @@ public class WechatController {
         }
         //获取微信openid
         String openid = wxMpOAuth2AccessToken.getOpenId();
-        return "redirect:" + returnUrl + "?openid=" + openid;
+        return "redirect:" + state + "?openid=" + openid;
     }
 
 }

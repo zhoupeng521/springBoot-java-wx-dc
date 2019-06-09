@@ -18,4 +18,4 @@ wechat:
   mchId:  #商户号ID
   mchKey: #商户号KEY
   KeyPath: #证书存放地址
-  notifyUrl: #异步回调地址
+  notifyUrl: http://55d6af99.ngrok.io/sell/pay/notify #异步回调地址
