@@ -19,3 +19,13 @@ wechat:
   mchKey: #商户号KEY
   KeyPath: #证书存放地址
   notifyUrl: http://55d6af99.ngrok.io/sell/pay/notify #异步回调地址
+
+#支付宝支付所需参数
+alipay:
+  url: https://openapi.alipay.com/gateway.do
+  appId: 2016082000296143
+  appPrivateKey: MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAsm5Xt6a4HgAB/S6ljdaARB1goPd8WL1Y1RJUGvPCeOuESEikr1viYywPP7Mkkk0O8pq+hQ13O8TLGCIGrCWym/ifby7i/0rnbVVgI2RxLvxM/OWFe4L/5FP1nDXva17nLUb/nL8etpvSAf5og/xLLGgarGnNoD38dZnOmL2l64wjhW/MVdMpfRZBkdWpG7TpNkO6269jktm8mpuMI8ZC6AAHRtC7BT1sdd8LpS2v6XUx+2o2nHtqW0E00pzRv6Sk7eByyvmaTPqpsbZj2XfwxR5xFjjnGE9xLSl5b8gm/rKKsXGqM87J+HJG5UNwE3YyIFm0lOxvrLdQkkxfGFe7OQIDAQAB
+  format: json
+  charset: UTF-8
+  alipayPublicKey: MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAx/H8al7PRkW5FpRmkIm7fNE2bS2SGebIOrPur2QgicK4V9u1pCmAXQkhtzKcTdxDCZMOPwK0XVXvIhMBdWJabR+Urz2FYV13AsnS7Aqg5TbwcwMGbkO3p/a1kHKIkkPejYeOmVGiOmpZsC/hi7Jc9naJB9WdnbZ2hS7zYI6Zn1JhhsSVPyjxjsqgwMCbOahB1EJ30S+mFBtTnJTabgcLA1lG8NanQGgTFBPGG9JsBEXcsBqAn63X0ar/6bP639GbrkBxv8fBzAwFNSv3lvGj9c5U82l0joDovFH5YqV9uijszOoMfX1a+e02kcXPXI/XtenUs2rfhXR4H7FrdtmgEQIDAQAB
+  signType: RSA2
