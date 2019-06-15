@@ -4,11 +4,17 @@ import com.alipay.api.AlipayApiException;
 import com.alipay.api.AlipayClient;
 import com.alipay.api.request.AlipayTradePayRequest;
 import com.alipay.api.response.AlipayTradePayResponse;
+import com.tts.logdome.common.enums.SellExceptionEnum;
+import com.tts.logdome.common.exception.SellException;
+import com.tts.logdome.common.model.builder.AlipayTradePayRequestBuilder;
 import com.tts.logdome.common.utils.AlipayUtils;
 import com.tts.logdome.common.utils.ResultVOUtils;
+import com.tts.logdome.dto.OrderDto;
+import com.tts.logdome.service.OrderService;
 import com.tts.logdome.vo.ResultVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -20,28 +26,18 @@ import org.springframework.web.bind.annotation.RestController;
 public class AlipayController {
 
     @Autowired
-    private AlipayUtils alipayUtils;
+    private OrderService orderService;
 
     @RequestMapping("/pay")
-    public ResultVO<AlipayTradePayResponse> pay(){
-        AlipayClient alipayClient = alipayUtils.getAlipayClient();
-        AlipayTradePayRequest alipayTradePayRequest = new AlipayTradePayRequest();//创建API对应的request类
-        alipayTradePayRequest.setBizContent("{" +
-                "    \"out_trade_no\":\"20190320010101011\"," +
-                "    \"scene\":\"bar_code\"," +
-                "    \"auth_code\":\"281594966156459756\"," +
-                "    \"subject\":\"Iphone6 16G\"," +
-                "    \"store_id\":\"NJ_001\"," +
-                "    \"timeout_express\":\"2m\"," +
-                "    \"total_amount\":\"1000\"" +
-                "  }");
-        AlipayTradePayResponse response = null;
-        try {
-            response = alipayClient.execute(alipayTradePayRequest);
-        } catch (AlipayApiException e) {
-            e.printStackTrace();
+    public ResultVO<AlipayTradePayResponse> pay(@RequestParam("orderId") String orderId,
+                                                @RequestParam("authCode") String authCode){
+        OrderDto orderDto = orderService.findOne(orderId);
+        if(orderDto == null){
+            throw new SellException(SellExceptionEnum.ORDER_NOT_EXIST);
         }
-        return ResultVOUtils.success(response);
+        AlipayTradePayRequest alipayTradePayRequest = AlipayUtils.getAlipayTradePayRequest(orderDto,authCode);
+
+        return ResultVOUtils.success();
     }
 
 }

@@ -1,5 +1,7 @@
 package com.tts.logdome.service.impl;
 
+import com.alipay.api.AlipayClient;
+import com.alipay.api.response.AlipayTradePayResponse;
 import com.lly835.bestpay.enums.BestPayTypeEnum;
 import com.lly835.bestpay.model.PayRequest;
 import com.lly835.bestpay.model.PayResponse;
@@ -8,10 +10,12 @@ import com.lly835.bestpay.model.RefundResponse;
 import com.lly835.bestpay.service.impl.BestPayServiceImpl;
 import com.tts.logdome.common.enums.SellExceptionEnum;
 import com.tts.logdome.common.exception.SellException;
+import com.tts.logdome.common.utils.AlipayUtils;
 import com.tts.logdome.common.utils.MathUtil;
 import com.tts.logdome.dto.OrderDto;
 import com.tts.logdome.service.OrderService;
 import com.tts.logdome.service.PayService;
+import com.tts.logdome.vo.ResultVO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -24,6 +28,9 @@ import org.springframework.stereotype.Service;
 public class PayServiceImpl implements PayService {
 
     private static final String WEIXIN_ORDER_NAME = "微信商城";
+
+    @Autowired
+    private AlipayUtils alipayUtils;
 
     @Autowired
     private BestPayServiceImpl bestPayService;
@@ -85,6 +92,13 @@ public class PayServiceImpl implements PayService {
         RefundResponse refundResponse = bestPayService.refund(refundRequest);
         log.info("【微信退款】refundResponse={}",refundResponse);
         return refundResponse;
+    }
+
+
+    @Override
+    public ResultVO<AlipayTradePayResponse> alipayTradePay() {
+        AlipayClient alipayClient = alipayUtils.getAlipayClient();
+        return null;
     }
 
 }
