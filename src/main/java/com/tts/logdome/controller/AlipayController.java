@@ -1,13 +1,8 @@
 package com.tts.logdome.controller;
 
-import com.alipay.api.AlipayApiException;
-import com.alipay.api.AlipayClient;
-import com.alipay.api.request.AlipayTradePayRequest;
 import com.alipay.api.response.AlipayTradePayResponse;
 import com.tts.logdome.common.enums.SellExceptionEnum;
 import com.tts.logdome.common.exception.SellException;
-import com.tts.logdome.common.model.builder.AlipayTradePayRequestBuilder;
-import com.tts.logdome.common.utils.AlipayUtils;
 import com.tts.logdome.common.utils.ResultVOUtils;
 import com.tts.logdome.dto.OrderDto;
 import com.tts.logdome.service.OrderService;

@@ -1,14 +1,11 @@
 package com.tts.logdome.service.impl;
 
-import com.alipay.api.AlipayApiException;
-import com.alipay.api.AlipayClient;
 import com.alipay.api.request.AlipayTradeCancelRequest;
 import com.alipay.api.request.AlipayTradePayRequest;
 import com.alipay.api.request.AlipayTradeQueryRequest;
 import com.alipay.api.response.AlipayTradeCancelResponse;
 import com.alipay.api.response.AlipayTradePayResponse;
 import com.alipay.api.response.AlipayTradeQueryResponse;
-import com.lly835.bestpay.constants.AlipayConstants;
 import com.lly835.bestpay.enums.BestPayTypeEnum;
 import com.lly835.bestpay.model.PayRequest;
 import com.lly835.bestpay.model.PayResponse;
@@ -25,9 +22,7 @@ import com.tts.logdome.common.utils.MathUtil;
 import com.tts.logdome.dto.OrderDto;
 import com.tts.logdome.service.OrderService;
 import com.tts.logdome.service.PayService;
-import com.tts.logdome.vo.ResultVO;
 import lombok.extern.slf4j.Slf4j;
-import net.bytebuddy.implementation.bytecode.Throw;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
