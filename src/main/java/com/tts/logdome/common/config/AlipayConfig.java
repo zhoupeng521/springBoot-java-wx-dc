@@ -35,5 +35,9 @@ public class AlipayConfig {
     //商户生成签名字符串所使用的签名算法类型，目前支持 RSA2 和 RSA，推荐使用 RSA2
     private String signType;
 
+    //最大轮询次数
+    private Integer maxQueryRetry;
 
+    //每次轮询的间隔
+    private Integer queryDuration;
 }

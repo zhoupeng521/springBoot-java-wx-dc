@@ -29,3 +29,6 @@ alipay:
   charset: UTF-8
   alipayPublicKey: MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAx/H8al7PRkW5FpRmkIm7fNE2bS2SGebIOrPur2QgicK4V9u1pCmAXQkhtzKcTdxDCZMOPwK0XVXvIhMBdWJabR+Urz2FYV13AsnS7Aqg5TbwcwMGbkO3p/a1kHKIkkPejYeOmVGiOmpZsC/hi7Jc9naJB9WdnbZ2hS7zYI6Zn1JhhsSVPyjxjsqgwMCbOahB1EJ30S+mFBtTnJTabgcLA1lG8NanQGgTFBPGG9JsBEXcsBqAn63X0ar/6bP639GbrkBxv8fBzAwFNSv3lvGj9c5U82l0joDovFH5YqV9uijszOoMfX1a+e02kcXPXI/XtenUs2rfhXR4H7FrdtmgEQIDAQAB
   signType: RSA2
+  # 当面付最大查询次数和查询间隔（毫秒）
+  maxQueryRetry: 5
+  queryDuration: 5000

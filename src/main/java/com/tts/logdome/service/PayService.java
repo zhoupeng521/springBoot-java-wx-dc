@@ -5,6 +5,7 @@ import com.lly835.bestpay.model.PayResponse;
 import com.lly835.bestpay.model.RefundResponse;
 import com.tts.logdome.dto.OrderDto;
 import com.tts.logdome.vo.ResultVO;
+import org.hibernate.criterion.Order;
 
 public interface PayService {
 
@@ -14,5 +15,5 @@ public interface PayService {
 
     RefundResponse refund(OrderDto orderDto);
 
-    ResultVO<AlipayTradePayResponse> alipayTradePay();
+    AlipayTradePayResponse alipayTradePay(OrderDto orderDto,String authCode);
 }

@@ -11,6 +11,7 @@ import com.tts.logdome.common.utils.AlipayUtils;
 import com.tts.logdome.common.utils.ResultVOUtils;
 import com.tts.logdome.dto.OrderDto;
 import com.tts.logdome.service.OrderService;
+import com.tts.logdome.service.PayService;
 import com.tts.logdome.vo.ResultVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -28,6 +29,15 @@ public class AlipayController {
     @Autowired
     private OrderService orderService;
 
+    @Autowired
+    private PayService payService;
+
+    /**
+     * 支付宝---支付接口
+     * @param orderId
+     * @param authCode
+     * @return
+     */
     @RequestMapping("/pay")
     public ResultVO<AlipayTradePayResponse> pay(@RequestParam("orderId") String orderId,
                                                 @RequestParam("authCode") String authCode){
@@ -35,9 +45,8 @@ public class AlipayController {
         if(orderDto == null){
             throw new SellException(SellExceptionEnum.ORDER_NOT_EXIST);
         }
-        AlipayTradePayRequest alipayTradePayRequest = AlipayUtils.getAlipayTradePayRequest(orderDto,authCode);
-
-        return ResultVOUtils.success();
+        AlipayTradePayResponse alipayTradePayResponse = payService.alipayTradePay(orderDto,authCode);
+        return ResultVOUtils.success(alipayTradePayResponse);
     }
 
 }
