@@ -9,6 +9,7 @@ import com.tts.logdome.service.OrderService;
 import com.tts.logdome.service.PayService;
 import com.tts.logdome.vo.ResultVO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -33,7 +34,7 @@ public class AlipayController {
      * @param authCode
      * @return
      */
-    @RequestMapping("/pay")
+    @GetMapping("/pay")
     public ResultVO<AlipayTradePayResponse> pay(@RequestParam("orderId") String orderId,
                                                 @RequestParam("authCode") String authCode){
         OrderDto orderDto = orderService.findOne(orderId);
@@ -43,5 +44,15 @@ public class AlipayController {
         AlipayTradePayResponse alipayTradePayResponse = payService.alipayTradePay(orderDto,authCode);
         return ResultVOUtils.success(alipayTradePayResponse);
     }
+
+    /**
+     * 支付宝退款
+     * @return
+     */
+    @GetMapping("/refund")
+    public ResultVO<Void> refund(){
+        return ResultVOUtils.success();
+    }
+
 
 }
