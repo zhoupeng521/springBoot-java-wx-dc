@@ -87,7 +87,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     /**
-     * 查询所有订单列表
+     * 查询所有订单列表(卖家端)
      * @param pageable
      * @return
      */
