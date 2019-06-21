@@ -19,10 +19,13 @@ import com.tts.logdome.common.enums.SellExceptionEnum;
 import com.tts.logdome.common.exception.SellException;
 import com.tts.logdome.common.utils.AlipayUtils;
 import com.tts.logdome.common.utils.MathUtil;
+import com.tts.logdome.data.AlipayRecord;
 import com.tts.logdome.dto.OrderDto;
+import com.tts.logdome.service.AlipayRecordService;
 import com.tts.logdome.service.OrderService;
 import com.tts.logdome.service.PayService;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -47,6 +50,14 @@ public class PayServiceImpl implements PayService {
     @Autowired
     private OrderService orderService;
 
+    @Autowired
+    private AlipayRecordService alipayRecordService;
+
+    /**
+     * 【微信】发起支付
+     * @param orderDto
+     * @return
+     */
     @Override
     public PayResponse create(OrderDto orderDto) {
         //支付订单参数
@@ -62,6 +73,11 @@ public class PayServiceImpl implements PayService {
         return payResponse;
     }
 
+    /**
+     * 【微信】异步通知
+     * @param notifyData
+     * @return
+     */
     @Override
     public PayResponse notify(String notifyData) {
         //1.验证签名
@@ -88,7 +104,7 @@ public class PayServiceImpl implements PayService {
     }
 
     /**
-     * 退款
+     * 【微信】退款
      * @param orderDto
      */
     @Override
@@ -104,7 +120,7 @@ public class PayServiceImpl implements PayService {
     }
 
     /**
-     * 支付宝当面支付服务
+     * 【支付宝】当面支付服务
      * @param orderDto
      * @param authCode
      * @return
@@ -117,12 +133,18 @@ public class PayServiceImpl implements PayService {
         String tradeNo = alipayTradePayResponse.getTradeNo();
         if(alipayTradePayResponse != null && AlipayResponseConstans.SUCCESS.equals(alipayTradePayResponse.getCode())){
             // 支付交易明确成功
+            //修改订单状态
+            orderService.paid(orderDto);
+            //保存支付记录
+            AlipayRecord alipayRecord = new AlipayRecord();
+            BeanUtils.copyProperties(alipayTradePayResponse, alipayRecord);
+            alipayRecordService.save(alipayRecord);
             return alipayTradePayResponse;
         }else if(alipayTradePayResponse != null && AlipayResponseConstans.PAYING.equals(alipayTradePayResponse.getCode())){
             // 返回用户处理中，则轮询查询交易是否成功，如果查询超时，则调用撤销
             AlipayTradeQueryResponse alipayTradeQueryResponse = loopQueryResult(outTradeNo,tradeNo);
             // 根据查询结果queryResponse判断交易是否支付成功，如果支付成功则更新result并返回，如果不成功则调用撤销
-           return checkQueryAndCancel(outTradeNo,tradeNo,alipayTradeQueryResponse);
+           return checkQueryAndCancel(outTradeNo,tradeNo,alipayTradeQueryResponse,orderDto);
 
         }else if(alipayTradePayResponse == null || AlipayResponseConstans.ERROR.equals(alipayTradePayResponse.getCode())){
             // 系统错误，则查询一次交易，如果交易没有支付成功，则调用撤销
@@ -131,7 +153,7 @@ public class PayServiceImpl implements PayService {
                     "    \"out_trade_no\": "+outTradeNo+"," +
                     "    \"trade_no\":"+tradeNo+"}"); //设置业务参数
             AlipayTradeQueryResponse alipayTradeQueryResponse = alipayUtils.getAlipayTradeQueryResponse(request);
-            return checkQueryAndCancel(outTradeNo,tradeNo,alipayTradeQueryResponse);
+            return checkQueryAndCancel(outTradeNo,tradeNo,alipayTradeQueryResponse,orderDto);
         }else{
             // 其他情况表明该订单支付明确失败
             return alipayTradePayResponse;
@@ -140,17 +162,22 @@ public class PayServiceImpl implements PayService {
     }
 
     /**
-     * 根据查询结果queryResponse判断交易是否支付成功，如果支付成功则更新result并返回，如果不成功则调用撤销
+     * 【支付宝】根据查询结果queryResponse判断交易是否支付成功，如果支付成功则更新result并返回，如果不成功则调用撤销
      * @param outTradeNo
      * @param tradeNo
      * @param queryResponse
      * @return
      */
     protected AlipayTradePayResponse checkQueryAndCancel(String outTradeNo, String tradeNo,
-                                                     AlipayTradeQueryResponse queryResponse) {
+                                                     AlipayTradeQueryResponse queryResponse,OrderDto orderDto) {
         AlipayTradePayResponse alipayTradePayResponse = TradeQueryResponseToPayResponse.convert(queryResponse);
         if(AlipayUtils.querySuccess(queryResponse)){
             //如果查询返回支付成功，则返回相应结果
+            orderService.paid(orderDto);
+            //保存支付记录
+            AlipayRecord alipayRecord = new AlipayRecord();
+            BeanUtils.copyProperties(alipayTradePayResponse, alipayRecord);
+            alipayRecordService.save(alipayRecord);
             return TradeQueryResponseToPayResponse.convert(queryResponse);
         }
         // 如果查询结果不为成功，则调用撤销
@@ -172,7 +199,7 @@ public class PayServiceImpl implements PayService {
     }
 
     /**
-     * 轮询查询订单
+     * 【支付宝】轮询查询订单
      * @return
      */
     public AlipayTradeQueryResponse loopQueryResult(String outTradeNo,String tradeNo){
