@@ -28,6 +28,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * 支付服务service
@@ -126,6 +127,7 @@ public class PayServiceImpl implements PayService {
      * @return
      */
     @Override
+    @Transactional
     public AlipayTradePayResponse alipayTradePay(OrderDto orderDto,String authCode) {
         AlipayTradePayRequest alipayTradePayRequest = AlipayUtils.getAlipayTradePayRequest(orderDto,authCode);
         AlipayTradePayResponse alipayTradePayResponse = alipayUtils.getAlipayTradeResponse(alipayTradePayRequest);
@@ -138,6 +140,7 @@ public class PayServiceImpl implements PayService {
             //保存支付记录
             AlipayRecord alipayRecord = new AlipayRecord();
             BeanUtils.copyProperties(alipayTradePayResponse, alipayRecord);
+            alipayRecord.setOrderId(orderDto.getOrderId());
             alipayRecordService.save(alipayRecord);
             return alipayTradePayResponse;
         }else if(alipayTradePayResponse != null && AlipayResponseConstans.PAYING.equals(alipayTradePayResponse.getCode())){
@@ -150,8 +153,8 @@ public class PayServiceImpl implements PayService {
             // 系统错误，则查询一次交易，如果交易没有支付成功，则调用撤销
             AlipayTradeQueryRequest request = new AlipayTradeQueryRequest();//创建API对应的request类
             request.setBizContent("{" +
-                    "    \"out_trade_no\": "+outTradeNo+"," +
-                    "    \"trade_no\":"+tradeNo+"}"); //设置业务参数
+                    "    \"out_trade_no\": \""+outTradeNo+"\"," +
+                    "    \"trade_no\":\""+tradeNo+"\"}"); //设置业务参数
             AlipayTradeQueryResponse alipayTradeQueryResponse = alipayUtils.getAlipayTradeQueryResponse(request);
             return checkQueryAndCancel(outTradeNo,tradeNo,alipayTradeQueryResponse,orderDto);
         }else{
@@ -178,13 +181,14 @@ public class PayServiceImpl implements PayService {
             AlipayRecord alipayRecord = new AlipayRecord();
             BeanUtils.copyProperties(alipayTradePayResponse, alipayRecord);
             alipayRecordService.save(alipayRecord);
+            alipayRecord.setOrderId(orderDto.getOrderId());
             return TradeQueryResponseToPayResponse.convert(queryResponse);
         }
         // 如果查询结果不为成功，则调用撤销
         AlipayTradeCancelRequest request = new AlipayTradeCancelRequest();//创建API对应的request类
         request.setBizContent("{" +
-                "    \"out_trade_no\": "+outTradeNo+"," +
-                "    \"trade_no\":"+tradeNo+"}"); //设置业务参数
+                "    \"out_trade_no\": \""+outTradeNo+"\"," +
+                "    \"trade_no\":\""+tradeNo+"\"}"); //设置业务参数
         AlipayTradeCancelResponse response = alipayUtils.getAlipayTradeCancelResponse(request);
         //交易异常，或发生系统错误
         if(AlipayUtils.tradeError(response)){
@@ -209,8 +213,8 @@ public class PayServiceImpl implements PayService {
             AlipayUtils.sleep(alipayConfig.getQueryDuration());//每五毫秒轮询一次
             AlipayTradeQueryRequest request = new AlipayTradeQueryRequest();//创建API对应的request类
             request.setBizContent("{" +
-                    "    \"out_trade_no\": "+outTradeNo+"," +
-                    "    \"trade_no\":"+tradeNo+"}"); //设置业务参数
+                    "    \"out_trade_no\": \""+outTradeNo+"\"," +
+                    "    \"trade_no\":\""+tradeNo+"\"}"); //设置业务参数
             AlipayTradeQueryResponse alipayTradeQueryResponse = alipayUtils.getAlipayTradeQueryResponse(request);
             if(alipayTradeQueryResponse != null){
                 if(AlipayUtils.stopQuery(alipayTradeQueryResponse)){

@@ -1,5 +1,6 @@
 package com.tts.logdome.data;
 
+import com.tts.logdome.common.utils.KeyGenerateUtils;
 import lombok.Data;
 
 import javax.persistence.Column;
@@ -15,7 +16,12 @@ public class AlipayRecord {
      * 主键ID
      */
     @Id
-    private String alipayId;
+    private String alipayId = KeyGenerateUtils.UUIDGenerate();
+
+    /**
+     * 订单ID
+     */
+    private String orderId;
 
     /**
      * 支付结果code
@@ -42,7 +48,7 @@ public class AlipayRecord {
     /**
      * 买家在支付宝的用户id
      */
-    private String buyerLoginId;
+    private String buyerLogonId;
 
     /**
      * 交易金额
