@@ -26,9 +26,13 @@ public class TwoTreeTest {
         temp[0].showNode();
         temp[1].showNode();*/
 
-        Node[] nodes = twoTree.sort();
+        twoTree.sort(twoTree.getRoot());
+        System.out.println(twoTree.getTreeDepth(twoTree.getRoot()));
+        Node[] nodes = twoTree.getNodes();
         for (Node n : nodes){
-            n.showNode();
+            if(n != null){
+                n.showNode();
+            }
         }
     }
 
