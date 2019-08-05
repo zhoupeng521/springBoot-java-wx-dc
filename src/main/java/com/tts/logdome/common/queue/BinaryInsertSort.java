@@ -7,7 +7,7 @@ public class BinaryInsertSort {
 
     public static void main(String[] args) {
 
-        int[] number = {1,34,12,24,22,55,33,11,8,7,3,2,5,6};
+        int[] number = {34,1};
         sort(number);
 
         System.out.println("排序之后：");
