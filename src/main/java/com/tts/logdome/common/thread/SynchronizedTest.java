@@ -7,12 +7,11 @@ package com.tts.logdome.common.thread;
  */
 public class SynchronizedTest {
 
-    public static int count = 0;
+    public  static int count = 0;
 
     public static void main(String[] args) {
         for (int i = 0 ; i < 10; i ++){
             new ThreadTest().start();
-            System.out.println("count = " + count);
         }
         try{
             Thread.sleep(1000);
