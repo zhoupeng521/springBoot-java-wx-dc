@@ -2,6 +2,7 @@ package com.tts.logdome.common.thread;
 
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
+import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 /**
  * @创建人 zp
@@ -14,6 +15,7 @@ public class FinalTest {
 
     public static void main(String[] args) {
         Lock lock = new ReentrantLock();
+        new ReentrantReadWriteLock();
         lock.lock();
         change();
         System.out.println(as);
