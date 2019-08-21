@@ -11,6 +11,7 @@ spring:
 server:
   servlet:
     context-path: /sell
+  port: 80
 
 wechat:
   mpAppId:  wx7bd9355a6a6345a8 #公众号appId
@@ -18,7 +19,7 @@ wechat:
   mchId:  #商户号ID
   mchKey: #商户号KEY
   KeyPath: #证书存放地址
-  notifyUrl: http://16106642.ngrok.io/sell/pay/notify #异步回调地址
+  notifyUrl: http://b0e3548e.ngrok.io/sell/pay/notify #异步回调地址
 
 #支付宝支付所需参数
 alipay:
