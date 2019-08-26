@@ -19,7 +19,7 @@ public class HttpTest {
         PrintWriter printWriter = null;
         BufferedReader reader = null;
         try{
-            URL url = new URL("https://api.weixin.qq.com/cgi-bin/token");
+            URL url = new URL("https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=wxc419ee3de5ed79ec&secret=6c4fe5f164c7975faca052aa0e3a4b4e");
 
             URLConnection urlConnection = url.openConnection();
 
